@@ -28,7 +28,7 @@ class PetscConan(ConanFile):
     def system_requirements(self):
         pack_names = None
         if tools.os_info.linux_distro == "ubuntu":
-            pack_names = ["libopenmpi-dev"]
+            pack_names = ["libopenmpi-dev", "libblas-dev", "liblapack-dev"]
 
         if pack_names:
             installer = tools.SystemPackageTool()
