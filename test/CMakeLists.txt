@@ -9,4 +9,4 @@ find_package(MPI REQUIRED)
 
 include_directories(${MPI_C_INCLUDE_DIRS})
 add_executable(test main.cpp)
-target_link_libraries(test ${CONAN_LIBS} ${CMAKE_DL_LIBS} ${MPI_C_LIBRARIES})
+target_link_libraries(test ${CONAN_LIBS} ${CMAKE_DL_LIBS} ${MPI_C_LIBRARIES} MPI::MPI_C)
