@@ -7,6 +7,6 @@ conan_basic_setup()
 
 find_package(MPI REQUIRED)
 
-include_directories(${CONAN_INCLUDE_DIRS}/vtk-7.1)
+include_directories(${MPI_C_INCLUDE_DIRS})
 add_executable(test main.cpp)
 target_link_libraries(test ${CONAN_LIBS} ${CMAKE_DL_LIBS} ${MPI_C_LIBRARIES})
