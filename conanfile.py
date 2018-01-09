@@ -25,6 +25,16 @@ class PetscConan(ConanFile):
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
 
+    def system_requirements(self):
+        pack_names = None
+        if tools.os_info.linux_distro == "ubuntu":
+            pack_names = ["libopenmpi-dev"]
+
+        if pack_names:
+            installer = tools.SystemPackageTool()
+            installer.update()
+            installer.install(" ".join(pack_names))
+
     def _build_linux(self):
         env_build = AutoToolsBuildEnvironment(self)
         env_build.fpic = True
