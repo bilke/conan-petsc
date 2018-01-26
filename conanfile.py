@@ -45,7 +45,7 @@ class PetscConan(ConanFile):
         env_build = AutoToolsBuildEnvironment(self)
         env_build.fpic = True
         with tools.environment_append(env_build.vars):
-            configure_args = ['--with-fc=0', '--prefix=../%s' % self.install_dir]
+            configure_args = ['--with-fc=0', '--download-f2cblaslapack=1', '--prefix=../%s' % self.install_dir]
             with tools.chdir(self.source_subfolder):
                 env_build.configure(args=configure_args)
                 env_build.make(args=["-j", "1", "all"])
