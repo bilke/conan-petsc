@@ -24,6 +24,8 @@ class PetscConan(ConanFile):
         tools.get("http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/{0}".format(zip_name))
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self.source_subfolder)
+        tools.download("https://raw.githubusercontent.com/petsc/petsc/a3e07f7d98935102301a2849d6c5439db2167066/configure",
+            "source/configure", overwrite=True)
 
     def system_requirements(self):
         pack_names = None
