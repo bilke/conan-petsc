@@ -13,8 +13,8 @@ class PetscConan(ConanFile):
     license="BSD"
 
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=False"
+    options = {"shared": [True, False], "skip_install_openmpi": [True, False]}
+    default_options = ("shared=False", "skip_install_openmpi=False")
 
     source_subfolder = "source"
     install_dir = "install"
@@ -31,12 +31,12 @@ class PetscConan(ConanFile):
         pack_names = None
         if tools.os_info.linux_distro == "ubuntu":
             pack_names = [
-                "libopenmpi-dev",
                 "libblas-dev",
                 "liblapack-dev",
-                "openmpi-bin",
                 "openssh-server"
             ]
+            if not self.options.skip_install_openmpi:
+              pack_names.append("libopenmpi-dev", "openmpi-bin")
 
         if pack_names:
             installer = tools.SystemPackageTool()
@@ -48,6 +48,10 @@ class PetscConan(ConanFile):
         env_build.fpic = True
         with tools.environment_append(env_build.vars):
             configure_args = ['--with-fc=0', '--download-f2cblaslapack=1', '--prefix=../%s' % self.install_dir]
+            #if "CC" in os.environ:
+            #    configure_args.append('--with-cc=$CC')
+            #if "CXX" in os.environ:
+            #    configure_args.append('--with-cxx=$CXX')
             with tools.chdir(self.source_subfolder):
                 env_build.configure(args=configure_args)
                 env_build.make(args=["-j", "1", "all"])
