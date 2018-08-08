@@ -31,12 +31,13 @@ class PetscConan(ConanFile):
         pack_names = None
         if tools.os_info.linux_distro == "ubuntu":
             pack_names = [
+                "python",
                 "libblas-dev",
                 "liblapack-dev",
                 "openssh-server"
             ]
             if not self.options.skip_install_openmpi:
-              pack_names.append("libopenmpi-dev", "openmpi-bin")
+                pack_names.append("libopenmpi-dev", "openmpi-bin")
 
         if pack_names:
             installer = tools.SystemPackageTool()
