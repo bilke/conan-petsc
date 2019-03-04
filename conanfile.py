@@ -27,6 +27,20 @@ class PetscConan(ConanFile):
         tools.download("https://raw.githubusercontent.com/petsc/petsc/a3e07f7d98935102301a2849d6c5439db2167066/configure",
             "source/configure", overwrite=True)
 
+    def _system_package_architecture(self):
+        if tools.os_info.with_apt:
+            if self.settings.arch == "x86":
+                return ':i386'
+            elif self.settings.arch == "x86_64":
+                return ':amd64'
+
+        if tools.os_info.with_yum:
+            if self.settings.arch == "x86":
+                return '.i686'
+            elif self.settings.arch == 'x86_64':
+                return '.x86_64'
+        return ""
+
     def system_requirements(self):
         pack_names = None
         if tools.os_info.linux_distro == "ubuntu":
@@ -37,12 +51,12 @@ class PetscConan(ConanFile):
                 "openssh-server"
             ]
             if not self.options.skip_install_openmpi:
-                pack_names.append("libopenmpi-dev", "openmpi-bin")
+                pack_names.extend(["libopenmpi-dev", "openmpi-bin"])
 
         if pack_names:
             installer = tools.SystemPackageTool()
-            installer.update()
-            installer.install(" ".join(pack_names))
+            for item in pack_names:
+                installer.install(item + self._system_package_architecture())
 
     def _build_linux(self):
         env_build = AutoToolsBuildEnvironment(self)
