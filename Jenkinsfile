@@ -2,4 +2,4 @@
 
 // Implementation at:
 // https://github.com/ufz/jenkins-pipeline-library/blob/master/vars/conanBuild.groovy
-conanBuild("petsc/3.11.2")
+conanBuild("petsc/3.11.2", true, true, false, true)
