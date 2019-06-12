@@ -6,7 +6,7 @@ import os
 
 class PetscConan(ConanFile):
     name = "petsc"
-    version = "3.8.3"
+    version = "3.11.2"
     url="http://github.com/bilke/conan-petsc"
     description = "PETSc is suite of data structures and routines for the scalable (parallel) solution of scientific applications modeled by partial differential equations."
 
@@ -63,10 +63,10 @@ class PetscConan(ConanFile):
         env_build.fpic = True
         with tools.environment_append(env_build.vars):
             configure_args = ['--with-fc=0', '--download-f2cblaslapack=1', '--prefix=../%s' % self.install_dir]
-            #if "CC" in os.environ:
-            #    configure_args.append('--with-cc=$CC')
-            #if "CXX" in os.environ:
-            #    configure_args.append('--with-cxx=$CXX')
+            if "CC" in os.environ:
+                configure_args.append('--with-cc=%s' % os.environ['CC'])
+            if "CXX" in os.environ:
+                configure_args.append('--with-cxx=%s' % os.environ['CXX'])
             with tools.chdir(self.source_subfolder):
                 env_build.configure(args=configure_args)
                 env_build.make(args=["-j", "1", "all"])
